@@ -19,7 +19,7 @@ Proyek kelompok mata kuliah DevOps: development dulu, lalu CI/CD dengan Jenkins 
 | [docs/00-overview.md](docs/00-overview.md) | Masalah, ruang lingkup, requirement, use case, RTM, arsitektur |
 | [docs/01-api-contract.md](docs/01-api-contract.md) | **Kontrak API dan konfigurasi: sumber kebenaran** |
 | [docs/02-cicd-jenkins.md](docs/02-cicd-jenkins.md) | Jenkins + webhook GitHub di VPS (fase 2) |
-| [docs/03-git-workflow.md](docs/03-git-workflow.md) | **Branch, commit, pull request. Kerja di branch tugas → PR ke `dev` → rilis ke `main`. Dilarang push langsung ke `dev`/`main`** |
+| [docs/03-git-workflow.md](docs/03-git-workflow.md) | **Branch, commit, pull request. Push langsung ke `dev` boleh; ke `main` hanya lewat PR rilis** |
 | Figma | <https://www.figma.com/design/DhWEhuRCLzcyPLhZuYiavO> |
 
 ## Sebelum commit pertama

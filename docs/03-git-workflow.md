@@ -1,12 +1,12 @@
 # 03 · Alur Kerja Git dan Pull Request
 
 > **Untuk semua anggota dan AI agent.** Wajib dibaca sebelum commit pertama.
-> Aturan paling penting: **tidak ada yang push langsung ke `dev` atau `main`.** Pekerjaan masuk ke `dev` lewat pull request (PR) yang disetujui, dan `dev` masuk ke `main` lewat PR rilis oleh PM.
+> Aturan paling penting: **`main` hanya berubah lewat pull request (PR) rilis dari `dev` oleh PM.** Push langsung ke `dev` diizinkan (tanpa PR dan tanpa approval). Branch tugas + PR ke `dev` tetap boleh dipakai bila ingin ditinjau dulu.
 
 ## 0. Enam aturan emas
 
-1. Push langsung ke `main`, `dev`, atau `master` **dilarang**. GitHub dan pengaman di laptop akan menolaknya.
-2. Semua branch tugas dibuat **dari `dev`**, dan PR-nya ditujukan **ke `dev`**.
+1. Push langsung ke `main` atau `master` **dilarang**; GitHub dan pengaman di laptop akan menolaknya. Push langsung ke `dev` **boleh**: jalankan `git pull origin dev` dulu, lalu perintah verifikasi peranmu, baru `git push origin dev`.
+2. Bila memakai branch tugas, buat **dari `dev`** dan PR-nya ditujukan **ke `dev`**.
 3. Satu tugas (satu ID: `B-07`, `FE-06`, `D-04`, ...) = satu branch = satu PR.
 4. Ubah hanya folder milik peranmu (lihat `AGENTS.md`).
 5. Sebelum push: perintah verifikasi peranmu harus lulus.
@@ -81,7 +81,7 @@ git config --global init.defaultBranch main
 git clone https://github.com/tmthyjw23/SiTangkap.git sitangkap
 cd sitangkap
 
-# 3. Pasang pengaman lokal yang menolak push ke main/dev/master (WAJIB)
+# 3. Pasang pengaman lokal yang menolak push ke main/master (WAJIB)
 git config core.hooksPath .githooks
 
 # 4. Cek
@@ -190,7 +190,9 @@ git push -u origin backend/rafli-b07-login-sesi
 
 `-u` hanya perlu sekali. Push berikutnya di branch yang sama cukup `git push`.
 
-Kalau muncul pesan `DITOLAK: dilarang push langsung ke dev` (atau `main`), berarti kamu sedang di branch yang salah. Itu pengaman yang bekerja; ikuti bagian 7.
+Kalau muncul pesan `DITOLAK: dilarang push langsung ke main`, berarti kamu sedang di branch yang salah. Itu pengaman yang bekerja; ikuti bagian 7.
+
+**Alternatif tanpa PR:** untuk perubahan yang tidak perlu ditinjau, kerjakan langsung di `dev`, lalu `git pull origin dev`, jalankan verifikasi, dan `git push origin dev`. Langkah 8–10 dilewati.
 
 ### Langkah 8 · Buat pull request ke `dev`
 
@@ -334,7 +336,7 @@ Untuk `main`, ganti `dev` dengan `main` di langkah 2. Lalu buat PR ke **`dev`**,
 
 | Dilarang | Alasan |
 | --- | --- |
-| Push langsung ke `main`, `dev`, atau `master` | Melewati review; GitHub dan hook lokal menolaknya |
+| Push langsung ke `main` atau `master` | Melewati PR rilis; GitHub dan hook lokal menolaknya. Push langsung ke `dev` diizinkan |
 | PR tugas dengan base `main` | Melewati `dev` dan uji bersama; tutup PR itu dan buat ulang dengan base `dev` |
 | `git push --force` ke branch mana pun yang punya PR | Menghapus riwayat dan komentar review |
 | Approve atau merge PR milik sendiri | Harus ada mata kedua |
@@ -348,9 +350,9 @@ Untuk `main`, ganti `dev` dengan `main` di langkah 2. Lalu buat PR ke **`dev`**,
 
 ## 9. Aturan khusus untuk AI agent
 
-1. Sebelum mengubah file, jalankan `git branch --show-current`. Kalau hasilnya `main`, `dev`, atau `master`, **berhenti** dan minta pengguna membuat atau memilih branch tugas (bagian 3, langkah 2–3).
+1. Sebelum mengubah file, jalankan `git branch --show-current`. Kalau hasilnya `main` atau `master`, **berhenti** dan minta pengguna pindah ke `dev` atau branch tugas. Bekerja langsung di `dev` boleh.
 2. Branch tugas selalu dibuat dari `dev` terbaru, dan PR selalu ber-base `dev`.
-3. Jangan pernah menjalankan `git push` ke `main`/`dev`/`master`, `git push --force`, `git reset --hard`, `git rebase`, atau `git branch -D` tanpa izin eksplisit pengguna di pesan yang sama.
+3. Jangan pernah menjalankan `git push` ke `main`/`master`, `git push --force`, `git reset --hard`, `git rebase`, atau `git branch -D` tanpa izin eksplisit pengguna di pesan yang sama. `git push origin dev` hanya bila pengguna memintanya.
 4. Gunakan `git add <folder-peran>/`, bukan `git add .` atau `git add -A`.
 5. Tampilkan `git status` dan `git diff --staged` kepada pengguna sebelum `git commit`.
 6. Pesan commit mengikuti format di langkah 4.
@@ -389,7 +391,9 @@ Kalau tersedia di UI-mu, ruleset per branch bisa membatasi metode merge: `dev` h
 
 ### 10.4 Settings → Branches → Add branch protection rule (lakukan dua kali: `main` dan `dev`)
 
-Untuk **setiap** branch name pattern `main` **dan** `dev`:
+Untuk **`dev`**: hanya **Do not allow bypassing the above settings**, dengan **Allow force pushes** dan **Allow deletions** tidak dicentang. **Jangan** centang "Require a pull request before merging", supaya push langsung ke `dev` bisa.
+
+Untuk **`main`**:
 
 - [ ] **Require a pull request before merging** (di beberapa versi tertulis "Require pull request reviews before merging")
   - [ ] Required approvals: **1**
@@ -402,15 +406,15 @@ Untuk **setiap** branch name pattern `main` **dan** `dev`:
 Uji, dengan hook dimatikan sementara supaya yang menolak benar-benar GitHub:
 
 ```bash
-git -c core.hooksPath=/dev/null push origin dev     # harus ditolak: "protected branch"
-git -c core.hooksPath=/dev/null push origin main    # harus ditolak
+git -c core.hooksPath=/dev/null push origin main    # harus ditolak: "protected branch"
+git -c core.hooksPath=/dev/null push --force origin dev   # harus ditolak (force push); push biasa ke dev diterima
 ```
 
 ### 10.5 File pendukung di repo
 
 | File | Fungsi |
 | --- | --- |
-| `.githooks/pre-push` | Menolak push ke `main`/`dev`/`master` dari laptop, sebelum sampai ke GitHub. Aktif setelah `git config core.hooksPath .githooks` (bagian 2) |
+| `.githooks/pre-push` | Menolak push ke `main`/`master` dari laptop, sebelum sampai ke GitHub. Aktif setelah `git config core.hooksPath .githooks` (bagian 2) |
 | `.github/pull_request_template.md` | Template deskripsi PR |
 | `.github/CODEOWNERS` | Otomatis meminta review PM di setiap PR. Sudah berisi `@tmthyjw23`. Untuk repo private, fitur ini juga perlu GitHub Pro |
 
@@ -421,4 +425,4 @@ git add .githooks/pre-push
 git update-index --chmod=+x .githooks/pre-push
 ```
 
-> Catatan: commit awal berisi dokumen (P-03 di panduan PM) dan pembuatan `dev` (10.2) adalah **satu-satunya** push langsung, dan dilakukan **sebelum** proteksi diaktifkan. Setelah 10.4 aktif, PM juga wajib lewat PR.
+> Catatan: commit awal berisi dokumen (P-03 di panduan PM) dan pembuatan `dev` (10.2) adalah **satu-satunya** push langsung, dan dilakukan **sebelum** proteksi diaktifkan. Setelah 10.4 aktif, perubahan ke `main` wajib lewat PR rilis; push ke `dev` tetap boleh langsung.
