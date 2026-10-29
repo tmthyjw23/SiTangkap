@@ -45,7 +45,7 @@ mysql --version   # MySQL 8.0.16+ / MariaDB 10.6+ (wajib: abas, Rafli, Magen; di
 3. Undang Magen, Rafli, dan abas sebagai collaborator (Settings → Collaborators).
    Sebelum commit ini: jadikan hook bisa dieksekusi (`git update-index --chmod=+x .githooks/pre-push`). Ini satu-satunya commit langsung ke `main`.
    Setelah push, buat branch `dev` dari `main` dan push juga (`git switch -c dev && git push -u origin dev`), lalu jadikan `dev` default branch ([`../03-git-workflow.md`](../03-git-workflow.md) bagian 10.2–10.3).
-4. Atur repo dan proteksi **`main` dan `dev`** persis seperti [`../03-git-workflow.md`](../03-git-workflow.md) bagian 10.1–10.4 (squash untuk PR tugas, merge commit untuk rilis, hapus branch tugas otomatis, wajib PR + 1 approval, tidak bisa di-bypass admin). Lalu uji: push langsung ke `dev` dan `main` harus ditolak GitHub.
+4. Atur repo dan proteksi **`main` dan `dev`** persis seperti [`../03-git-workflow.md`](../03-git-workflow.md) bagian 10.1–10.4 (squash untuk PR tugas, merge commit untuk rilis, hapus branch tugas otomatis, `main` wajib PR + 1 approval, `dev` boleh push langsung, tidak bisa di-bypass admin). Lalu uji: push langsung ke `main` harus ditolak GitHub.
    **Catatan:** untuk repo *private*, protected branch butuh GitHub Pro di akun pemilik (gratis lewat GitHub Student Developer Pack); repo *public* bisa langsung.
 5. Buat label: `frontend`, `backend`, `database`, `kontrak`, `bug`, `ci`.
 

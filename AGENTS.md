@@ -56,12 +56,12 @@ Kalau pengguna tidak menyebut perannya, **tanyakan dulu** sebelum mengubah file 
 
 ## 4. Git (detail lengkap: `docs/03-git-workflow.md`)
 
-- **Dilarang push langsung ke `main`, `dev`, atau `master`.** Branch tugas dibuat dari `dev` dan masuk ke `dev` lewat pull request dengan minimal 1 approval. Rilis `dev` → `main` hanya dilakukan PM.
+- **Dilarang push langsung ke `main` atau `master`.** `main` hanya berubah lewat pull request rilis `dev` → `main` oleh PM. Push langsung ke `dev` diizinkan; branch tugas + PR ke `dev` tetap boleh dipakai.
 - Branch: `<peran>/<nama>-<id>-<ringkasan>`, huruf kecil tanpa spasi, contoh `backend/rafli-b07-login-sesi`.
 - Pesan commit: `<jenis>(<peran>): <ID> <ringkasan>`, contoh `feat(backend): B-07 login, logout, dan sesi`. Jenis: `feat`, `fix`, `test`, `docs`, `chore`.
 - Sebelum push: `git fetch origin && git merge origin/dev`, lalu jalankan perintah verifikasi. Jangan `rebase`, jangan `--force`.
-- Sebelum mengubah file apa pun, jalankan `git branch --show-current`. Kalau hasilnya `main`, `dev`, atau `master`, berhenti dan minta pengguna membuat branch tugas dari `dev`.
-- Pull request selalu ber-base `dev`, tidak pernah `main`.
+- Sebelum mengubah file apa pun, jalankan `git branch --show-current`. Kalau hasilnya `main` atau `master`, berhenti dan minta pengguna pindah ke `dev` atau branch tugas.
+- Pull request tugas selalu ber-base `dev`, tidak pernah `main`.
 - Patuhi bagian 9 di `docs/03-git-workflow.md` (aturan khusus AI agent).
 
 ## 5. Port dan alamat lokal
